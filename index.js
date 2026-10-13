@@ -17,6 +17,7 @@ app.get('/api/ping', (request, response) => {
 })
 
 app.get('/api/blood-pressure', (request, response) => {
+	console.log('API called: GET /api/blood-pressure');
 	const systolic = request.query.systolic
 	const diastolic = request.query.diastolic
 
@@ -53,8 +54,13 @@ app.get('/api/blood-pressure', (request, response) => {
 	else if (systolicIndex == 4 || diastolicIndex == 3) {
 		finalIndex = 4;
 	}
-	response.json({
-		category: systolicCategories[finalIndex] || 'Unknown'
+
+	const category = systolicCategories[finalIndex] || 'Unknown';
+
+    console.log(`Sending blood pressure response: ${category}`);
+
+    response.json({
+        category: category
 	});
 });
 
