@@ -64,6 +64,71 @@ app.get('/api/blood-pressure', (request, response) => {
 	});
 });
 
+//BMI API
+	app.get('/api/bmi', (request, response) => {
+		console.log('API called: GET /api/bmi');
+		
+		const feetText = request.query.feet;
+    	const inchesText = request.query.inches;
+    	const weightText = request.query.weight;
+
+		if (
+			feetText === undefined ||
+        	inchesText === undefined ||
+        	weightText === undefined ||
+        	feetText.trim() === '' ||
+        	inchesText.trim() === '' ||
+        	weightText.trim() === ''
+		) {
+			return response.status(400).json({ error: 'Enter a valid height in feet and inches and a weight greater than zero' });
+		}
+
+		const feet = Number(feetText);
+    	const inches = Number(inchesText);
+    	const weight = Number(weightText);
+
+
+		if (
+			!Number.isFinite(feet) ||
+        	!Number.isFinite(inches) ||
+        	!Number.isFinite(weight) ||
+        	!Number.isInteger(feet) ||
+        	!Number.isInteger(inches) ||
+        	feet < 0 ||
+        	inches < 0 ||
+        	inches > 11 ||
+        	feet + inches === 0 ||
+        	weight <= 0
+
+		) {
+			return response.status(400).json({ error: 'Invalid. Enter a valid height in feet and inches and a weight greater than zero' });
+		}
+
+		const totalInches = feet * 12 + inches;
+		const bmi = (703 * weight) / (totalInches * totalInches);
+
+		let category;
+
+		if (bmi < 18.5) {
+			category = 'Underweight';
+		} else if (bmi < 25) {
+			category = 'Normal weight';
+		} else if (bmi < 30) {
+			category = 'Overweight';
+		} else {
+			category = 'Obese';
+		}
+
+		const roundedBmi = Number(bmi.toFixed(1));
+
+		console.log('Sending BMI response:', { bmi, category });
+		response.json({
+			bmi: roundedBmi,
+			category: category
+		});
+	});
+		
+
 // Custom 404 page.
 app.use((request, response) => {
   response.type('text/plain')
