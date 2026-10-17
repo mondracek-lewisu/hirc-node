@@ -129,6 +129,76 @@ app.get('/api/blood-pressure', (request, response) => {
 	});
 		
 
+// RISK CATEGORY
+
+	app.get('/api/riskCategory', (request, response) =>{
+		console.log('API called: get /api/riskCategory')
+		const age = request.query.age;
+		const bmi = request.query.bmi;
+		const bp = request.query.bp;
+		const diabetesCheck = request.query.diabetes === 'true';
+		const cancerCheck = request.query.cancer === 'true';
+		const alzheimerCheck = request.query.alzheimer === 'true';
+
+		const ageScores = {
+			'30': 0,
+			'45': 10,
+			'60': 20,
+			'61': 30
+		}
+
+		const bmiScore = {
+			'normal': 0,
+			'overweight': 30,
+			'obese': 75
+		}
+
+		const bpScore = {
+			'normal': 0,
+			'elevated': 15,
+			'stage1': 30,
+			'stage2': 75,
+			'crisis': 100
+		}
+
+		if (!(age in ageScores) || !(bmi in bmiScore) || !(bp in bpScore)){
+			return response.status(400).json({ error: 'Invalid or missing age, bmi, or bp value'});
+		}
+
+		let riskScore = ageScores[age] + bmiScore[bmi] + bpScore[bp]
+
+		if (diabetesCheck){
+			riskScore += 10;
+		}
+
+		if (cancerCheck){
+			riskScore += 10;
+		}
+
+		if (alzheimerCheck){
+			riskScore += 10;
+		}
+
+
+		let category;
+		if (riskScore <= 20){
+			category = 'Low Risk';
+		} else if (riskScore <= 50){
+			category = 'Moderate Risk';
+		} else if (riskScore <= 75){
+			category = 'High Risk';
+		} else {
+			category = 'Uninsurable';
+		}
+
+		console.log('Sending risk calculator response: ', { riskScore, category })
+		response.json({
+			riskScore,
+			category
+
+		})
+
+	})
 // Custom 404 page.
 app.use((request, response) => {
   response.type('text/plain')
