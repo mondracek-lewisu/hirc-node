@@ -1,17 +1,18 @@
-# MERNa server including a template for Node.js and Express hosted on Microsoft Azure
-MERNa stands for MongoDB, Express, React, abd Node on Azure. 
+# Health Insurance Risk Calculator (Node.js)
+This website hosts the APIs used in the Health Insurance Risk Calculator assignment.
 
-This repository serves as a template that can be used as a template to create a Node.js and Express based website hosted 
-on Microsoft Azure.
+## URL (How to Access)
+[Webiste Link](https://hirc-node-b8d6e6d9fxceb6a6.centralus-01.azurewebsites.net/)
 
-Azure hosting notes:
-Select Node 18 LTS
-
+### How to Test
 To execute locally:
 git clone [[your-repository-url]]
 cd [[your-repository-url]]
 npm install express
 npm start
 
-## URL
-[Webiste Link](https://hirc-node-b8d6e6d9fxceb6a6.centralus-01.azurewebsites.net/)
+#### Credits
+- **Application:** Health Insurance Risk Calculator (Node.js)
+- **Author:** SpiderScrum
+- **Template:** Eric Pogue
+- **Template Source:** GitHub
