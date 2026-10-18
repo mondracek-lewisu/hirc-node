@@ -12,8 +12,13 @@ app.use(cors({ origin: '*' }))
 
 app.get('/api/ping', (request, response) => {
 	console.log('Calling "/api/ping"')
-	response.type('text/plain')
-	response.send('ping response')
+	response.set('Cache-Control', 'no-store')
+	response.json({
+		status: 'ok',
+		message: 'Server is Awake',
+		uptimeSeconds: Math.round(process.uptime()),
+		timestamp: new Date().toISOString()
+	})
 })
 
 app.get('/api/blood-pressure', (request, response) => {
